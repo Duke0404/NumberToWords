@@ -44,6 +44,13 @@ to_words(N) :-
     ),
     !.
 
+% Numbers less than 0
+to_words(N) :-
+    N < 0,
+    write('minus '),
+    Absolute is abs(N),
+    to_words(Absolute).
+
 % Wrapper
 to_words(N) :-
     (N >= 0, N =< 1000) ->
