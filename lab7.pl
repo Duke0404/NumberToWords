@@ -28,7 +28,8 @@ to_words(N) :-
     Tens is N - Ones,
     tens(Tens, TensWord),
     write(TensWord),
-    (Ones > 0 -> write(' '), to_words(Ones) ; true).
+    (Ones > 0 -> write(' '), to_words(Ones) ; true),
+    !.
 
 % Numbers 100-999
 to_words(N) :-
@@ -38,10 +39,7 @@ to_words(N) :-
     Remainder is N mod 100,
     to_words(Hundreds),
     write(' hundred'),
-    (
-        Remainder = 0 -> true ;
-        write(' and '), to_words(Remainder)
-    ),
+    (Remainder = 0 -> true ; write(' and '), to_words(Remainder)),
     !.
 
 % Numbers less than 0
@@ -49,14 +47,17 @@ to_words(N) :-
     N < 0,
     write('minus '),
     Absolute is abs(N),
-    to_words(Absolute).
+    to_words(Absolute),
+    !.
+
+% Numbers 1000
+to_words(1000) :- write('one thousand'), !.
 
 % Wrapper
 to_words(N) :-
-    (N >= 0, N =< 1000) ->
-    to_words(N)
-    ;
-    write('Out of range').
+    (N > 1000 ; N < -1000) ->
+    write('Out of range') ;
+    true.
 
 % Tens words
 tens(20, twenty).
